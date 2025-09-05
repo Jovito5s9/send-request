@@ -7,3 +7,10 @@ client.connect((target_host,target_port))
 client.send('Eu sou o cliente, estou me conectando ao server'.encode())
 response= client.recv(4096)
 print(response.decode())
+
+
+while True:
+    mensage=input("Você: ")
+    if(mensage.lower()=="sair"):
+        break
+    client.send(mensage.encode())

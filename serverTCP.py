@@ -10,11 +10,15 @@ server.listen(5)
 print ('[*] Escutando %s:%d ' %(bind_ip,bind_port))
 
 def handle_client(client_socket):
-    request = client_socket.recv(1024)
-    print('[*] Recebido: %s' %request.decode())
-    print('\n---------------------\n')
-    client_socket.send(('\nMensagem destinada ao cliente: %s\n' %addr[0]).encode())
-    client_socket.send(('\n ACK! \nRecebido pelo servidor!\n').encode())#cliente recebeu a mensagem
+    while True:
+        try:
+            request = client_socket.recv(1024)
+            if not request:
+                break
+            print(f'{addr} disse: %s' %request.decode())
+            client_socket.send((f'Servidor recebeu: {request.decode()}\n').encode())
+        except:
+            break
     client_socket.close()
 
 while True:
