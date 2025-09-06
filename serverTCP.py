@@ -15,24 +15,23 @@ def handle_recive(client_socket,addr):
             request = client_socket.recv(1024)
             if not request:
                 break
-            print(f'{addr} disse: %s' %request.decode())
-            client_socket.send((f'\nServidor recebeu: {request.decode()}\n').encode())
+            print(f'*: %s' %request.decode())
         except:
             break
     client_socket.close()
 
-def handle_send(client_socket,addr):
+def handle_send(client_socket, addr):
     while True:
         try:
-            mensage=input("[Servidor]: ")
-            client_socket.send((f"[servidor]: {mensage.decode()}").encode())
+            mensage = input("- ")      # input retorna str
+            client_socket.send(f"*: {mensage}".encode())
         except:
-            pass
+            print("Erro ao enviar mensagem ou * desconectado.")
+            break
 
 def handle_client(client_socket,addr):
     threading.Thread(target=handle_recive,args=(client_socket,addr)).start()
     threading.Thread(target=handle_send,args=(client_socket,addr)).start()
-    pass
 
 while True:
     client, addr= server.accept()
