@@ -1,7 +1,13 @@
 import socket
 import threading
 
-bind_ip = 'localhost'  #nome do server
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))  # so pra descobrir a interface usada
+ip_local = s.getsockname()[0]
+s.close()
+
+bind_ip = ip_local  #ip do server
 bind_port = 8080       #porta do meu server
 
 server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)#AF_NET=IP V6//SOCK_STREAM=protocolo TCP, juntos sao TCP/IP
