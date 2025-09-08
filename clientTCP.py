@@ -1,12 +1,34 @@
 import socket#adicionar threading pra melhorar
 import threading
+from ipUDP import ips
 
-target_host='localhost'
+target_host=''
 target_port=8080
 client=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-client.connect((target_host,target_port))
-client.send('* conectado no servidor'.encode())
-print("-conectado")
+
+def escolher_servidor():
+    global target_host
+    options = ips() 
+    if not options:
+        print("Nenhum chat disponivel.")
+        return None
+    print("você deseja se conectar com quem?")
+    for opc, ip in enumerate(options, start=1):
+        print(f"{opc} - ip: {ip}")
+    print("(pressione Enter ou qualquer outra tecla para sair)")
+    escolha = input("Escolha o número: ").strip()
+    try:
+        option = int(escolha)
+    except ValueError:
+        print("Saindo.")
+        return None
+    if 1 <= option <= len(options):
+        target_host = options[option-1]
+        print("Selecionado:", target_host)
+    else:
+        print("Número fora do intervalo.")
+        return None
+
 
 def send_mensage():
     while True:
@@ -25,6 +47,12 @@ def recv_mensage():
             print(f"\n{data.decode()}")
         except:
             break
+
+
+escolher_servidor()
+client.connect((target_host,target_port))
+client.send('* conectado no servidor'.encode())
+print("-conectado")
 
 threading.Thread(target=recv_mensage,daemon=True).start()
 threading.Thread(target=send_mensage).start()
