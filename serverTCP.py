@@ -29,7 +29,7 @@ def handle_recive(client_socket,addr):
 def handle_send(client_socket, addr):
     while True:
         try:
-            mensage = input("- ")      # input retorna str
+            mensage = input("- ")     
             client_socket.send(f"*: {mensage}".encode())
         except:
             print("Erro ao enviar mensagem ou * desconectado.")
@@ -41,6 +41,5 @@ def handle_client(client_socket,addr):
 
 while True:
     client, addr= server.accept()
-    print('[*] Conexão aceita de: %s:%d' %(addr[0],addr[1]))
     client_handler= threading.Thread(target=handle_client,args=(client,addr))
     client_handler.start()
