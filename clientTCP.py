@@ -48,11 +48,16 @@ def recv_mensage():
         except:
             break
 
+def cliente():
+    escolher_servidor()
+    try:
+        client.connect((target_host,target_port))
+        client.send('* conectado no servidor'.encode())
+        print("-conectado")
 
-escolher_servidor()
-client.connect((target_host,target_port))
-client.send('* conectado no servidor'.encode())
-print("-conectado")
-
-threading.Thread(target=recv_mensage,daemon=True).start()
-threading.Thread(target=send_mensage).start()
+        threading.Thread(target=recv_mensage,daemon=True).start()
+        threading.Thread(target=send_mensage).start()
+    except:
+        return None
+if __name__=='__main__':
+    cliente()
