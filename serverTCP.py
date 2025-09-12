@@ -2,17 +2,7 @@ import socket
 import threading
 
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))  # so pra descobrir a interface usada
-ip_local = s.getsockname()[0]
-s.close()
 
-bind_ip = ip_local  #ip do server
-bind_port = 8080       #porta do meu server
-
-server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)#AF_NET=IP V6//SOCK_STREAM=protocolo TCP, juntos sao TCP/IP
-server.bind((bind_ip,bind_port))
-server.listen(5)
 
 def handle_recive(client_socket,addr):
     while True:
@@ -37,7 +27,17 @@ def handle_send(client_socket, addr):
 def handle_client(client_socket,addr):
     threading.Thread(target=handle_recive,args=(client_socket,addr)).start()
     threading.Thread(target=handle_send,args=(client_socket,addr)).start()
+    
 def sala():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))  # so pra descobrir a interface usada
+    ip_local = s.getsockname()[0]
+    s.close()
+    bind_ip = ip_local  #ip do server
+    bind_port = 8080       #porta do meu server
+    server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)#AF_NET=IP V6//SOCK_STREAM=protocolo TCP, juntos sao TCP/IP
+    server.bind((bind_ip,bind_port))
+    server.listen(5)
     print ('Novo chat em %s:%d ' %(bind_ip,bind_port))
     while True:
         client, addr= server.accept()
