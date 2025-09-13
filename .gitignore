@@ -5,3 +5,5 @@ __pycache__/
 *.so
 *.dll
 *.dylib
+ChatLocal.zip
+ChatLocal
